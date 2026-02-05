@@ -5,11 +5,14 @@ import "../App.css";
 const Projects = () => {
   const [projects, setProjects] = useState([]);
 
+  // Base URL from environment variable
+  const API_BASE = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/projects")
+    axios.get(`${API_BASE}/api/projects`)
       .then((res) => setProjects(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((err) => console.error("Error fetching projects:", err));
+  }, [API_BASE]);
 
   return (
     <div className="projects-page">
@@ -38,7 +41,6 @@ const Projects = () => {
                     : project.description}
                 </p>
 
-                {/* Only show tech if available */}
                 {project.tech && project.tech.length > 0 && (
                   <div className="project-tech">
                     {project.tech.map((t, i) => (
@@ -55,7 +57,6 @@ const Projects = () => {
                     <a href={project.github} target="_blank" rel="noreferrer">Code</a>
                   )}
                 </div>
-
               </div>
             </div>
           ))

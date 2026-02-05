@@ -8,17 +8,20 @@ import "@google/model-viewer";
 const Home = () => {
   const [resumeUrl, setResumeUrl] = useState(null);
 
+  // Use environment variable for backend base URL
+  const API_BASE = process.env.REACT_APP_API_URL;
+
   // Fetch resume from backend API
   useEffect(() => {
-    fetch("http://localhost:5000/api/resume")
+    fetch(`${API_BASE}/api/resume`)
       .then((res) => res.json())
       .then((data) => {
         if (data.resumeUrl) {
-          setResumeUrl(`http://localhost:5000${data.resumeUrl}`);
+          setResumeUrl(`${API_BASE}${data.resumeUrl}`);
         }
       })
       .catch((err) => console.error("Error fetching resume:", err));
-  }, []);
+  }, [API_BASE]);
 
   return (
     <div>
@@ -78,8 +81,6 @@ const Home = () => {
           <SkillBar skill="UI/UX Design" percent={88} />
         </div>
       </section>
-
-
     </div>
   );
 };
