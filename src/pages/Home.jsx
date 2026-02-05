@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SocialIcons from "../components/SocialIcons";
 import SkillBar from "../components/SkillBar";
-import Footer from "../components/Footer";
 import "@google/model-viewer";
 
 const Home = () => {
@@ -81,7 +80,6 @@ const Home = () => {
           <SkillBar skill="UI/UX Design" percent={88} />
         </div>
       </section>
-       <Footer />
     </div>
     
   );

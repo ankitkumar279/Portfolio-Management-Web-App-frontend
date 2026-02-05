@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaLaptopCode, FaTools, FaCertificate } from "react-icons/fa";
 import "../App.css";
 
+const API_BASE = process.env.REACT_APP_API_URL;
 
 const Skills = () => {
   const [skills, setSkills] = useState([]);
@@ -10,17 +11,17 @@ const Skills = () => {
   const [certifications, setCertifications] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/skills")
+    axios.get(`${API_BASE}/api/skills`)
       .then((res) => setSkills(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error("Skills error:", err));
 
-    axios.get("http://localhost:5000/api/tools")
+    axios.get(`${API_BASE}/api/tools`)
       .then((res) => setTools(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error("Tools error:", err));
 
-    axios.get("http://localhost:5000/api/certifications")
+    axios.get(`${API_BASE}/api/certifications`)
       .then((res) => setCertifications(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error("Cert error:", err));
   }, []);
 
   return (
@@ -31,6 +32,7 @@ const Skills = () => {
           A comprehensive overview of my technical abilities and professional competencies
         </p>
       </div>
+
       <div className="skills-tools-container">
         <div className="outer-box-horizontal">
           <h3><FaLaptopCode /> Skills</h3>
@@ -40,14 +42,15 @@ const Skills = () => {
             ) : (
               skills.map((skill) => (
                 <div key={skill._id} className="skill-item-vertical">
-                  <strong>{skill.name}</strong> <br />
-                  Category: {skill.category || "N/A"} <br />
+                  <strong>{skill.name}</strong><br />
+                  Category: {skill.category || "N/A"}<br />
                   Level: {skill.level || "N/A"}
                 </div>
               ))
             )}
           </div>
         </div>
+
         <div className="outer-box-horizontal">
           <h3><FaTools /> Tools & Others</h3>
           <div className="inner-box-vertical">
@@ -56,7 +59,7 @@ const Skills = () => {
             ) : (
               tools.map((tool) => (
                 <div key={tool._id} className="skill-item-vertical">
-                  <strong>{tool.name}</strong> <br />
+                  <strong>{tool.name}</strong><br />
                   Category: {tool.category || "N/A"}
                 </div>
               ))
@@ -65,22 +68,22 @@ const Skills = () => {
         </div>
       </div>
 
-<div className="certifications-section">
-  <h2><FaCertificate /> Certifications & Learning</h2>
-  <div className="certifications-grid">
-    {certifications.length === 0 ? (
-      <p>Loading certifications...</p>
-    ) : (
-      certifications.map((cert) => (
-        <div key={cert._id.$oid || cert._id} className="cert-card">
-          <h4>{cert.title}</h4>
-          <p>Provider: {cert.provider || cert.issuer || "N/A"}</p>
-          <p>Year: {cert.year || cert.issuedDate || "N/A"}</p>
+      <div className="certifications-section">
+        <h2><FaCertificate /> Certifications & Learning</h2>
+        <div className="certifications-grid">
+          {certifications.length === 0 ? (
+            <p>Loading certifications...</p>
+          ) : (
+            certifications.map((cert) => (
+              <div key={cert._id} className="cert-card">
+                <h4>{cert.title}</h4>
+                <p>Provider: {cert.provider || cert.issuer || "N/A"}</p>
+                <p>Year: {cert.year || cert.issuedDate || "N/A"}</p>
+              </div>
+            ))
+          )}
         </div>
-      ))
-    )}
-  </div>
-</div>
+      </div>
     </div>
   );
 };
