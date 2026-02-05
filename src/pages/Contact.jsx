@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { 
   FaEnvelope, 
-  FaPhone, 
   FaMapMarkerAlt, 
   FaGithub, 
   FaLinkedin, 
@@ -10,8 +9,8 @@ import {
 } from "react-icons/fa";
 import "../App.css";
 
-// Use your deployed backend URL
-const API_BASE = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+// Use environment variable for backend URL
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const Contact = () => {
   const [contactInfo, setContactInfo] = useState({});
@@ -21,28 +20,31 @@ const Contact = () => {
   useEffect(() => {
     axios.get(`${API_BASE}/api/contact`)
       .then((res) => setContactInfo(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Error fetching contact info:", err));
   }, []);
 
   // Handle form submission
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const formData = {
-    name: e.target.name.value,
-    email: e.target.email.value,
-    subject: e.target.subject.value,
-    message: e.target.message.value,
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // actually use setLoading now
+    const formData = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      subject: e.target.subject.value,
+      message: e.target.message.value,
+    };
 
-  try {
-    const res = await axios.post(`${API_BASE}/api/send-contact`, formData);
-    alert(res.data.message);
-    e.target.reset();
-  } catch (err) {
-    console.error(err);
-    alert("Error sending message. Please try again later.");
-  }
-};
+    try {
+      const res = await axios.post(`${API_BASE}/api/send-contact`, formData);
+      alert(res.data.message);
+      e.target.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Error sending message. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="contact-page">
@@ -76,7 +78,6 @@ const Contact = () => {
             <span className="label">Mail</span>
             <span className="value">{contactInfo.email}</span>
           </div>
-
 
           <div className="info-row">
             <FaMapMarkerAlt />
