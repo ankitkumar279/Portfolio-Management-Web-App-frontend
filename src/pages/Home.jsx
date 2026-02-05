@@ -81,7 +81,9 @@ const Home = () => {
           <SkillBar skill="UI/UX Design" percent={88} />
         </div>
       </section>
+       <Footer />
     </div>
+    
   );
 };
 
