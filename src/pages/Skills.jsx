@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaLaptopCode, FaTools, FaCertificate } from "react-icons/fa";
 import "../App.css";
 
+// Backend URL from environment variable
 const API_BASE = process.env.REACT_APP_API_URL;
 
 const Skills = () => {
@@ -21,7 +22,7 @@ const Skills = () => {
 
     axios.get(`${API_BASE}/api/certifications`)
       .then((res) => setCertifications(res.data))
-      .catch((err) => console.error("Cert error:", err));
+      .catch((err) => console.error("Certifications error:", err));
   }, []);
 
   return (
@@ -34,6 +35,8 @@ const Skills = () => {
       </div>
 
       <div className="skills-tools-container">
+
+        {/* ===== SKILLS ===== */}
         <div className="outer-box-horizontal">
           <h3><FaLaptopCode /> Skills</h3>
           <div className="inner-box-vertical">
@@ -43,14 +46,27 @@ const Skills = () => {
               skills.map((skill) => (
                 <div key={skill._id} className="skill-item-vertical">
                   <strong>{skill.name}</strong><br />
-                  Category: {skill.category || "N/A"}<br />
-                  Level: {skill.level || "N/A"}
+
+                  {/* Show category ONLY if it exists */}
+                  {skill.category && (
+                    <>
+                      Category: {skill.category}<br />
+                    </>
+                  )}
+
+                  {/* Show level ONLY if it exists */}
+                  {skill.level && (
+                    <>
+                      Level: {skill.level}
+                    </>
+                  )}
                 </div>
               ))
             )}
           </div>
         </div>
 
+        {/* ===== TOOLS ===== */}
         <div className="outer-box-horizontal">
           <h3><FaTools /> Tools & Others</h3>
           <div className="inner-box-vertical">
@@ -60,14 +76,20 @@ const Skills = () => {
               tools.map((tool) => (
                 <div key={tool._id} className="skill-item-vertical">
                   <strong>{tool.name}</strong><br />
-                  Category: {tool.category || "N/A"}
+
+                  {/* Show category ONLY if it exists */}
+                  {tool.category && (
+                    <>Category: {tool.category}</>
+                  )}
                 </div>
               ))
             )}
           </div>
         </div>
+
       </div>
 
+      {/* ===== CERTIFICATIONS ===== */}
       <div className="certifications-section">
         <h2><FaCertificate /> Certifications & Learning</h2>
         <div className="certifications-grid">
@@ -77,8 +99,14 @@ const Skills = () => {
             certifications.map((cert) => (
               <div key={cert._id} className="cert-card">
                 <h4>{cert.title}</h4>
-                <p>Provider: {cert.provider || cert.issuer || "N/A"}</p>
-                <p>Year: {cert.year || cert.issuedDate || "N/A"}</p>
+
+                {(cert.provider || cert.issuer) && (
+                  <p>Provider: {cert.provider || cert.issuer}</p>
+                )}
+
+                {(cert.year || cert.issuedDate) && (
+                  <p>Year: {cert.year || cert.issuedDate}</p>
+                )}
               </div>
             ))
           )}
