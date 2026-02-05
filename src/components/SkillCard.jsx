@@ -6,7 +6,6 @@ const SkillCard = ({ skill }) => (
     <div className="card-body">
       <h5>{skill.name}</h5>
       <p>Level: {skill.level}</p>
-      <p>Category: {skill.category || 'N/A'}</p>
     </div>
   </div>
 );
